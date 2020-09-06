@@ -1,13 +1,18 @@
-import { Controller, Get, Post, Param, Body, Patch, Delete, Query } from '@nestjs/common';
-// import { response } from 'express';
+import { Controller, Get, Post, Param, Body, Patch, Delete, Query } from '@nestjs/common'
+import { ChocolateService } from 'src/chocolate/chocolate.service'
+import { Chocolate } from './chocolate.entity'
+// import { response } from 'express'
 
 @Controller('chocolate')
 export class ChocolateController {
+  constructor(private readonly chocolateService: ChocolateService) {}
+
   @Get()
   findAll(@Query() paginationQuery) {
-    const { limit, offset } = paginationQuery;
+    // const { limit, offset } = paginationQuery
 
-    return `All chocolate in the Universe ! constraints: Limit: ${limit}, Offset: ${offset}`
+    // return `All chocolate in the Universe ! constraints: Limit: ${limit}, Offset: ${offset}`
+    return this.chocolateService.findAll()
   }
   // @Get()
   // findAll(@Res() response) {
@@ -16,22 +21,26 @@ export class ChocolateController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return `This endpoint chocolate/{id} returns: #${id}`;
+    // return `This endpoint chocolate/{id} returns: #${id}`
+    return this.chocolateService.findOne(id)
   }
 
   @Post()
   // @HttpCode(HttpStatus.GONE)
-  create(@Body('name') body: string) {
-    return body;
+  create(@Body() body: Chocolate) {
+    console.log('create_body', body)
+    return this.chocolateService.create(body)
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() body) {
-    return `This endpoint updates the body (${body})for the specified id: #${id}`
+    // return `This endpoint updates the body (${body})for the specified id: #${id}`
+    return this.chocolateService.update(id, body)
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return `This endpoint removes the entry corresponding to id #${id}`
+    // return `This endpoint removes the entry corresponding to id #${id}`
+    return this.chocolateService.remove(id)
   }
 }
