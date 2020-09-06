@@ -1,11 +1,14 @@
 import { Controller, Get, Post, Param, Body, Patch, Delete } from '@nestjs/common'
 import { ChocolateService } from 'src/modules/chocolate/chocolate.service'
-import { Chocolate } from './entity/chocolate.entity'
+import { CreateChocolateDto } from './dto/create-chocolate.dto'
+import { UpdateChocolateDto } from './dto/update-chocolate.dto'
 // import { response } from 'express'
 
 @Controller('chocolate')
 export class ChocolateController {
-  constructor(private readonly chocolateService: ChocolateService) {}
+  constructor(
+    private readonly chocolateService: ChocolateService,
+  ) {}
 
   @Get()
   findAll() {
@@ -28,15 +31,15 @@ export class ChocolateController {
 
   @Post()
   // @HttpCode(HttpStatus.GONE)
-  create(@Body() body: Chocolate) {
-    console.log('create_body', body)
-    return this.chocolateService.create(body)
+  create(@Body() createChocolateDto: CreateChocolateDto) {
+    console.log('create_body', createChocolateDto)
+    return this.chocolateService.create(createChocolateDto)
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() body) {
-    // return `This endpoint updates the body (${body})for the specified id: #${id}`
-    return this.chocolateService.update(id, body)
+  update(@Param('id') id: string, @Body() updateChocolateDto: UpdateChocolateDto) {
+    // return `This endpoint updates the body (${updateChocolateDto})for the specified id: #${id}`
+    return this.chocolateService.update(id, updateChocolateDto)
   }
 
   @Delete(':id')
